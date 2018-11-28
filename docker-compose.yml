@@ -1,0 +1,41 @@
+version: "2.1"
+
+services:
+  nginx:
+    image: nginx:1.15
+    depends_on:
+      - spa
+      - server
+    volumes:
+      - ./services/nginx/sites-enabled:/etc/nginx/conf.d:delegated
+    volumes_from:
+      - spa
+      - server
+    ports:
+      - 80:80
+  server:
+    image: node:10
+    container_name: server
+    working_dir: /app/server
+    entrypoint: ["/app/services/server/scripts/run.sh"]
+    command: ["npm", "start"]
+    external_links:
+      - server.localhost
+    volumes:
+      - ./server:/app/server:cached
+      - ./services:/app/services:delegated
+    ports:
+      - 3000:3000
+  spa:
+    image: node:10
+    container_name: spa
+    working_dir: /app/spa
+    entrypoint: ["/app/services/spa/scripts/run.sh"]
+    command: ["npm", "start"]
+    external_links:
+      - spa.localhost
+    volumes:
+      - ./spa:/app/spa:cached
+      - ./services:/app/services:delegated
+    ports:
+      - 4000:4000
