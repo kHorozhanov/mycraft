@@ -1,0 +1,8 @@
+<p>
+  header works!
+</p>
+<pre>{{user$ | async | json}}</pre>
+<button (click)="onLogout()" *ngIf="isLoggedIn$ | async; else signInBtn">logout</button>
+<ng-template #signInBtn>
+  <button (click)="onLogin()" [disabled]="isLoggedIn$ | async">login</button>
+</ng-template>

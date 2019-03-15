@@ -1,0 +1,6 @@
+<app-sign-in
+  *ngIf="config.mode === authDialogModes.SIGN_IN"
+  [loading]="loading"
+  [initialValue]="config.signInFormValue"
+  (signIn)="onSignIn($event)"
+></app-sign-in>
